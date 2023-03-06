@@ -4,7 +4,6 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"strings"
 	"sync"
@@ -21,7 +20,7 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/tools/leaderelection"
 	"k8s.io/client-go/tools/leaderelection/resourcelock"
-	"k8s.io/klog"
+	"k8s.io/klog/v2"
 
 	routeclientset "github.com/openshift/client-go/route/clientset/versioned"
 
@@ -198,7 +197,7 @@ func (o *Options) Complete() error {
 
 	if len(o.ControllerNamespace) == 0 {
 		// Autodetect if running inside a cluster
-		bytes, err := ioutil.ReadFile("/var/run/secrets/kubernetes.io/serviceaccount/namespace")
+		bytes, err := os.ReadFile("/var/run/secrets/kubernetes.io/serviceaccount/namespace")
 		if err != nil {
 			return fmt.Errorf("can't autodetect controller namespace: %w", err)
 		}
@@ -271,17 +270,19 @@ func (o *Options) Run(cmd *cobra.Command, streams genericclioptions.IOStreams) e
 	id := hostname + "_" + string(uuid.NewUUID())
 	klog.V(4).Infof("Leaderelection ID is %q", id)
 
-	// we use the Lease lock type since edits to Leases are less common
-	// and fewer objects in the cluster watch "all Leases".
-	lock := &resourcelock.ConfigMapLock{
-		ConfigMapMeta: metav1.ObjectMeta{
-			Name:      "acme-controller-locks",
-			Namespace: o.ControllerNamespace,
-		},
-		Client: o.kubeClient.CoreV1(),
-		LockConfig: resourcelock.ResourceLockConfig{
+	lock, err := resourcelock.New(
+		resourcelock.ConfigMapsLeasesResourceLock,
+		o.ControllerNamespace,
+		"acme-controller-locks",
+		o.kubeClient.CoreV1(),
+		o.kubeClient.CoordinationV1(),
+		resourcelock.ResourceLockConfig{
 			Identity: id,
 		},
+	)
+
+	if err != nil {
+		return fmt.Errorf("ConfigMapsLeasesResourceLock failed: %v", err)
 	}
 
 	leChan := make(chan struct{})
@@ -295,6 +296,7 @@ func (o *Options) Run(cmd *cobra.Command, streams genericclioptions.IOStreams) e
 			OnStartedLeading: func(ctx context.Context) {
 				close(leChan)
 			},
+
 			OnStoppedLeading: func() {
 				select {
 				case <-leCtx.Done():
@@ -305,11 +307,18 @@ func (o *Options) Run(cmd *cobra.Command, streams genericclioptions.IOStreams) e
 					time.AfterFunc(3*time.Second, func() {
 						klog.Fatalf("Failed to exit in time after releasing leaderelection lock")
 					})
-
 				default:
 					// Leader election lost
 					klog.Fatalf("leaderelection lost")
 				}
+			},
+
+			OnNewLeader: func(current_id string) {
+				if current_id == id {
+					klog.Info("I'm the leader!")
+					return
+				}
+				klog.Info("New leader is ", current_id)
 			},
 		},
 		Name: "openshift-acme",
