@@ -12,7 +12,7 @@ require (
 	github.com/openshift/build-machinery-go v0.0.0-20230301101616-cc7b88a966e2
 	github.com/openshift/client-go v0.0.0-20230120202327-72f107311084
 	github.com/prometheus/client_golang v1.14.0
-	github.com/spf13/cobra v1.6.0
+	github.com/spf13/cobra v1.6.1
 	github.com/spf13/pflag v1.0.5
 	golang.org/x/crypto v0.7.0
 	gopkg.in/inf.v0 v0.9.1
