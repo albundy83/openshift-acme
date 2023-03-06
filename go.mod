@@ -8,7 +8,7 @@ require (
 	github.com/google/go-cmp v0.5.9
 	github.com/onsi/ginkgo/v2 v2.9.0
 	github.com/onsi/gomega v1.27.2
-	github.com/openshift/api v0.0.0-20230228142948-d170fcdc0fa6
+	github.com/openshift/api v3.9.0+incompatible
 	github.com/openshift/build-machinery-go v0.0.0-20230301101616-cc7b88a966e2
 	github.com/openshift/client-go v0.0.0-20230120202327-72f107311084
 	github.com/prometheus/client_golang v1.14.0
