@@ -1,7 +1,7 @@
 # Notice
-This repo is a fork of https://github.com/tnozicka/openshift-acme which has been archived by is author.
+This repo is a fork of https://github.com/tnozicka/openshift-acme which has been archived by his author.
 
-I have updated some part of the original code but just to be able to update go and module version.
+I have updated some part of the original code but just to be able to update go and modules versions.
 
 Updated images are available here :
 
