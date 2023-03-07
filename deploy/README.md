@@ -42,7 +42,7 @@ oc create rolebinding openshift-acme --role=openshift-acme --serviceaccount="$( 
 If you want to deploy it directly from GitHub use:
 
 ```bash
-oc apply -fhttps://raw.githubusercontent.com/tnozicka/openshift-acme/master/deploy/single-namespace/{role,serviceaccount,issuer-letsencrypt-live,deployment}.yaml
+oc apply -fhttps://raw.githubusercontent.com/tnozicka/openshift-acme/master/deploy/single-namespace/{role,rolebinding,serviceaccount,issuer-letsencrypt-live,deployment}.yaml
 oc create rolebinding openshift-acme --role=openshift-acme --serviceaccount="$( oc project -q ):openshift-acme" --dry-run -o yaml | oc apply -f -
 ```
 

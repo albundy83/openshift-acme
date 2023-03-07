@@ -30,8 +30,8 @@ rules:
     - ''
   resources:
     - configmaps
-    - services
     - secrets
+    - services
   verbs:
     - create
     - delete

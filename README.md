@@ -1,3 +1,23 @@
+# Notice
+This repo is a fork of https://github.com/tnozicka/openshift-acme which has been archived by is author.
+
+I have updated some part of the original code but just to be able to update go and module version.
+
+Updated images are available here :
+
+- [https://quay.io/repository/docaposte/openshift-acme-controller](https://quay.io/repository/docaposte/openshift-acme-controller)
+- [https://quay.io/repository/docaposte/openshift-acme-exposer](https://quay.io/repository/docaposte/openshift-acme-exposer)
+
+You can use them or better build them, it's very easy:
+```bash
+docker build -f images/openshift-acme-controller/Dockerfile .
+docker build -f images/openshift-acme-exposer/Dockerfile .
+```
+
+It works on OpenShift 4.10.
+
+Enjoy and improve :-)
+
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=KQE4S78YRTEA6)
 
 # openshift-acme
