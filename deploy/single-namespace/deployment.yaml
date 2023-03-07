@@ -18,15 +18,24 @@ spec:
     spec:
       serviceAccountName: openshift-acme
       containers:
-      - name: openshift-acme
-        image: quay.io/tnozicka/openshift-acme:controller
-        imagePullPolicy: Always
-        args:
-        - --exposer-image=quay.io/tnozicka/openshift-acme:exposer
-        - --loglevel=4
-        - --namespace=$(CURRENT_NAMESPACE)
-        env:
-        - name: CURRENT_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
+        - name: openshift-acme
+          image: quay.io/docaposte/openshift-acme-controller:latest
+          imagePullPolicy: IfNotPresent
+          args:
+            - --exposer-image=quay.io/docaposte/openshift-acme-exposer:latest
+            - --loglevel=4
+            - --namespace=$(CURRENT_NAMESPACE)
+          env:
+            - name: CURRENT_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          resources:
+            limits:
+              cpu: 100m
+              ephemeral-storage: 100Mi
+              memory: 128Mi
+            requests:
+              cpu: 100m
+              ephemeral-storage: '0'
+              memory: 64Mi
