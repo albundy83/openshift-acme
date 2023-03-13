@@ -10,7 +10,7 @@ require (
 	github.com/onsi/gomega v1.27.2
 	github.com/openshift/api v0.0.0-20230228142948-d170fcdc0fa6
 	github.com/openshift/build-machinery-go v0.0.0-20230301101616-cc7b88a966e2
-	github.com/openshift/client-go v0.0.0-20230120202327-72f107311084
+	github.com/openshift/client-go v3.9.0+incompatible
 	github.com/prometheus/client_golang v1.14.0
 	github.com/spf13/cobra v1.6.0
 	github.com/spf13/pflag v1.0.5
@@ -33,6 +33,7 @@ require (
 	github.com/go-openapi/swag v0.19.14 // indirect
 	github.com/go-task/slim-sprig v0.0.0-20210107165309-348f09dbbbc0 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
+	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/gnostic v0.5.7-v3refs // indirect
